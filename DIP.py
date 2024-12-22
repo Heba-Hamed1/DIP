@@ -5,35 +5,32 @@ class FrontEnd:
      def display_data(self):
          data = self.back_end.get_data_from_database()
          print("Display data:", data)
+         
 class BackEnd:
     def get_data_from_database(self):
         return "Data from the database"
     
-    
-    
+
 #this code solve using DIP   
 from abc import ABC, abstractmethod
 
+class FrontEnd:
+    def __init__(self, data_source):
+        self.data_source = data_source
 
-class DataService(ABC):
+    def display_data(self):
+        data = self.data_source.get_data()
+        print("Display data:", data)
+
+class DataSource(ABC):
     @abstractmethod
     def get_data(self):
         pass
 
-
-class BackEnd(DataService):
+class Database(DataSource):
     def get_data(self):
         return "Data from the database"
 
-class FrontEnd:
-    def __init__(self, data_service: DataService):
-        self.data_service = data_service
-
-    def display_data(self):
-        data = self.data_service.get_data()
-        print("Display data:", data)
-
-
-back_end = BackEnd()
-front_end = FrontEnd(back_end)
-front_end.display_data()
+class API(DataSource):
+    def get_data(self):
+        return "Data from the API"
